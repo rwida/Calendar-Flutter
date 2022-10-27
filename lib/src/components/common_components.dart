@@ -49,7 +49,7 @@ class CalendarPageHeader extends StatelessWidget {
     this.onPreviousDay,
     this.secondaryDate,
     this.backgroundColor = Constants.headerBackground,
-    this.iconColor = Constants.black,
+    this.iconColor = Constants.white,
     this.textStyle,
   }) : super(key: key);
 
@@ -69,8 +69,7 @@ class CalendarPageHeader extends StatelessWidget {
             focusColor: Colors.transparent,
             hoverColor: Colors.transparent,
             highlightColor: Colors.transparent,
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             icon: Icon(
               Icons.chevron_left,
               size: 30,
@@ -83,7 +82,8 @@ class CalendarPageHeader extends StatelessWidget {
               child: Text(
                 dateStringBuilder(date, secondaryDate: secondaryDate),
                 textAlign: TextAlign.center,
-                style: textStyle,
+                //style: textStyle,
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ),
@@ -93,8 +93,7 @@ class CalendarPageHeader extends StatelessWidget {
             focusColor: Colors.transparent,
             hoverColor: Colors.transparent,
             highlightColor: Colors.transparent,
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             icon: Icon(
               Icons.chevron_right,
               size: 30,
