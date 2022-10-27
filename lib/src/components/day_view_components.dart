@@ -120,11 +120,10 @@ class DayPageHeader extends CalendarPageHeader {
     VoidCallback? onNextDay,
     AsyncCallback? onTitleTapped,
     VoidCallback? onPreviousDay,
-    Color iconColor = Constants.black,
+    Color iconColor = Constants.white,
     Color backgroundColor = Constants.headerBackground,
     StringProvider? dateStringBuilder,
     required DateTime date,
-    TextStyle? textStyle,
   }) : super(
           key: key,
           date: date,
@@ -133,12 +132,9 @@ class DayPageHeader extends CalendarPageHeader {
           onNextDay: onNextDay,
           onPreviousDay: onPreviousDay,
           onTitleTapped: onTitleTapped,
-          dateStringBuilder:
-              dateStringBuilder ?? DayPageHeader._dayStringBuilder,
-          textStyle: textStyle,
+          dateStringBuilder: dateStringBuilder ?? DayPageHeader._dayStringBuilder,
         );
-  static String _dayStringBuilder(DateTime date, {DateTime? secondaryDate}) =>
-      "${date.day} - ${date.month} - ${date.year}";
+  static String _dayStringBuilder(DateTime date, {DateTime? secondaryDate}) => "${date.day} - ${date.month} - ${date.year}";
 }
 
 class DefaultTimeLineMark extends StatelessWidget {
@@ -161,9 +157,7 @@ class DefaultTimeLineMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeString = (timeStringBuilder != null)
-        ? timeStringBuilder!(date)
-        : "${((date.hour - 1) % 12) + 1} ${date.hour ~/ 12 == 0 ? "am" : "pm"}";
+    final timeString = (timeStringBuilder != null) ? timeStringBuilder!(date) : "${((date.hour - 1) % 12) + 1} ${date.hour ~/ 12 == 0 ? "am" : "pm"}";
     return Transform.translate(
       offset: Offset(0, -7.5),
       child: Padding(

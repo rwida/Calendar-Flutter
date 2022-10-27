@@ -37,7 +37,7 @@ class CircularCell extends StatelessWidget {
     required this.date,
     this.events = const [],
     this.shouldHighlight = false,
-    this.backgroundColor = Colors.blue,
+    this.backgroundColor = Constants.headerBackground,
     this.highlightedTitleColor = Constants.white,
     this.titleColor = Constants.black,
   }) : super(key: key);
@@ -65,9 +65,6 @@ class FilledCell<T extends Object?> extends StatelessWidget {
 
   /// List of events on for current date.
   final List<CalendarEventData<T>> events;
-
-  /// defines date string for current cell.
-  final StringProvider? dateStringBuilder;
 
   /// Defines if cell should be highlighted or not.
   /// If true it will display date title in a circle.
@@ -105,14 +102,13 @@ class FilledCell<T extends Object?> extends StatelessWidget {
     required this.events,
     this.isInMonth = false,
     this.shouldHighlight = false,
-    this.backgroundColor = Colors.blue,
-    this.highlightColor = Colors.blue,
+    this.backgroundColor = Constants.headerBackground,
+    this.highlightColor = Constants.headerBackground,
     this.onTileTap,
-    this.tileColor = Colors.blue,
+    this.tileColor = Constants.headerBackground,
     this.highlightRadius = 11,
     this.titleColor = Constants.black,
     this.highlightedTitleColor = Constants.white,
-    this.dateStringBuilder,
   }) : super(key: key);
 
   @override
@@ -126,10 +122,9 @@ class FilledCell<T extends Object?> extends StatelessWidget {
           ),
           CircleAvatar(
             radius: highlightRadius,
-            backgroundColor:
-                shouldHighlight ? highlightColor : Colors.transparent,
+            backgroundColor: shouldHighlight ? highlightColor : Colors.transparent,
             child: Text(
-              dateStringBuilder?.call(date) ?? "${date.day}",
+              "${date.day}",
               style: TextStyle(
                 color: shouldHighlight
                     ? highlightedTitleColor
@@ -153,15 +148,13 @@ class FilledCell<T extends Object?> extends StatelessWidget {
                     children: List.generate(
                       events.length,
                       (index) => GestureDetector(
-                        onTap: () =>
-                            onTileTap?.call(events[index], events[index].date),
+                        onTap: () => onTileTap?.call(events[index], events[index].date),
                         child: Container(
                           decoration: BoxDecoration(
                             color: events[index].color,
                             borderRadius: BorderRadius.circular(4.0),
                           ),
-                          margin: EdgeInsets.symmetric(
-                              vertical: 2.0, horizontal: 3.0),
+                          margin: EdgeInsets.symmetric(vertical: 2.0, horizontal: 3.0),
                           padding: const EdgeInsets.all(2.0),
                           alignment: Alignment.center,
                           child: Row(
@@ -199,11 +192,9 @@ class MonthPageHeader extends CalendarPageHeader {
     VoidCallback? onNextMonth,
     AsyncCallback? onTitleTapped,
     VoidCallback? onPreviousMonth,
-    Color iconColor = Constants.black,
+    Color iconColor = Constants.white,
     Color backgroundColor = Constants.headerBackground,
-    StringProvider? dateStringBuilder,
     required DateTime date,
-    TextStyle? textStyle,
   }) : super(
           key: key,
           date: date,
@@ -212,20 +203,14 @@ class MonthPageHeader extends CalendarPageHeader {
           onTitleTapped: onTitleTapped,
           iconColor: iconColor,
           backgroundColor: backgroundColor,
-          dateStringBuilder:
-              dateStringBuilder ?? MonthPageHeader._monthStringBuilder,
-          textStyle: textStyle,
+          dateStringBuilder: MonthPageHeader._monthStringBuilder,
         );
-  static String _monthStringBuilder(DateTime date, {DateTime? secondaryDate}) =>
-      "${date.month} - ${date.year}";
+  static String _monthStringBuilder(DateTime date, {DateTime? secondaryDate}) => "${date.month} - ${date.year}";
 }
 
 class WeekDayTile extends StatelessWidget {
   /// Index of week day.
   final int dayIndex;
-
-  /// display week day
-  final String Function(int)? weekDayStringBuilder;
 
   /// Background color of single week day tile.
   final Color backgroundColor;
@@ -243,7 +228,6 @@ class WeekDayTile extends StatelessWidget {
     this.backgroundColor = Constants.white,
     this.displayBorder = true,
     this.textStyle,
-    this.weekDayStringBuilder,
   }) : super(key: key);
 
   @override
@@ -260,12 +244,10 @@ class WeekDayTile extends StatelessWidget {
         ),
       ),
       child: Text(
-        weekDayStringBuilder?.call(dayIndex) ?? Constants.weekTitles[dayIndex],
-        style: textStyle ??
-            TextStyle(
-              fontSize: 17,
-              color: Constants.black,
-            ),
+        Constants.weekTitles[dayIndex],
+        style: TextStyle(
+          fontSize: 17,
+        ),
       ),
     );
   }
