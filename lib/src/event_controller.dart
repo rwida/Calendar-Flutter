@@ -40,7 +40,7 @@ class EventController<T extends Object?> extends ChangeNotifier {
 
   //#region Public Fields
   /// Returns list of [CalendarEventData<T>] stored in this controller.
-  List<CalendarEventData<T>> get events => _eventList.toList(growable: false);
+  List<CalendarEventData<T>> get events => _eventList.toList();
 
   /// This method will provide list of events on particular date.
   ///
@@ -73,6 +73,15 @@ class EventController<T extends Object?> extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeAll() {
+    _eventList.clear();
+    events.clear();
+    _events.clear();
+    _rangingEventList.clear();
+
+    notifyListeners();
+  }
+
   /// Removes [event] from this controller.
   void remove(CalendarEventData<T> event) {
     final date = event.date.withoutTime;
@@ -96,16 +105,6 @@ class EventController<T extends Object?> extends ChangeNotifier {
     }
   }
 
-  /// Removes multiple [event] from this controller.
-  void removeWhere(bool Function(CalendarEventData<T> element) test) {
-    for (final e in _events.values) {
-      e.removeWhere(test);
-    }
-    _rangingEventList.removeWhere(test);
-    _eventList.removeWhere(test);
-    notifyListeners();
-  }
-
   /// Returns events on given day.
   ///
   /// To overwrite default behaviour of this function,
@@ -121,16 +120,12 @@ class EventController<T extends Object?> extends ChangeNotifier {
 
     final daysFromRange = <DateTime>[];
     for (final rangingEvent in _rangingEventList) {
-      for (var i = 0;
-          i <= rangingEvent.endDate.difference(rangingEvent.date).inDays;
-          i++) {
+      for (var i = 0; i <= rangingEvent.endDate.difference(rangingEvent.date).inDays; i++) {
         daysFromRange.add(rangingEvent.date.add(Duration(days: i)));
       }
       if (rangingEvent.date.isBefore(rangingEvent.endDate)) {
         for (final eventDay in daysFromRange) {
-          if (eventDay.year == date.year &&
-              eventDay.month == date.month &&
-              eventDay.day == date.day) {
+          if (eventDay.year == date.year && eventDay.month == date.month && eventDay.day == date.day) {
             events.add(rangingEvent);
           }
         }
@@ -151,8 +146,7 @@ class EventController<T extends Object?> extends ChangeNotifier {
 
   //#region Private Methods
   void _addEvent(CalendarEventData<T> event) {
-    assert(event.endDate.difference(event.date).inDays >= 0,
-        'The end date must be greater or equal to the start date');
+    assert(event.endDate.difference(event.date).inDays >= 0, 'The end date must be greater or equal to the start date');
 
     if (event.endDate.difference(event.date).inDays > 0) {
       _rangingEventList.add(event);
@@ -173,5 +167,5 @@ class EventController<T extends Object?> extends ChangeNotifier {
     notifyListeners();
   }
 
-//#endregion
+  //#endregion
 }
